@@ -13,7 +13,7 @@ parser.add_argument(
 parser.add_argument(
 	"--exp_name",
 	type=str,
-	required=False,
+	required=True,
 	help="Name of experiment."
 )
 
