@@ -1,8 +1,9 @@
-import pathlib
+import logging
 
 from sklearn.model_selection import train_test_split
 from transformers import TFBertForMaskedLM, BertConfig
 
+from argparser import parser
 from data import *
 from paths import *
 from utils import *
@@ -15,16 +16,20 @@ SPECIAL_TOKS = ['[cls]', '[mask]', '[sep]', '[pad]']
 VOCAB = SPECIAL_TOKS + DNA_TOKS
 
 MAX_SEQ_LEN = 510
-BATCH_SIZE = 32
 SHUFFLE_BUFFER_SIZE = 100
-EPOCHS = 20
-NUM_HIDDEN_LAYERS = 6
-NUM_ATTENTION_HEADS = 4
-HIDDEN_SIZE = 384
-INTERMEDIATE_SIZE = 1536
 
 
-if LARGE_DATASET == True:
+logger = logging.getLogger(__name__)
+
+# Setup logging
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
+    datefmt="%m/%d/%Y %H:%M:%S"
+)
+
+args = parser.parse_args()
+
+if args.large_dataset == True:
 	# extract files from archive
 	pathlib.Path(PATH_TO_GENOMES).mkdir(parents=True, exist_ok=True)
 	extract_tar_file(PATH_TO_TAR, PATH_TO_GENOMES)
@@ -54,9 +59,9 @@ train_ids, test_ids = train_test_split(all_ids, test_size=0.2, random_state=1)
 train_ids, val_ids = train_test_split(train_ids, test_size = 0.25, random_state=1)
 print('train:', train_ids.shape, 'val:', val_ids.shape, 'test:', test_ids.shape)
 
-train_ds = create_dataset(train_ids, SHUFFLE_BUFFER_SIZE, BATCH_SIZE)
-val_ds = create_dataset(val_ids, SHUFFLE_BUFFER_SIZE, BATCH_SIZE)
-test_ds = create_dataset(test_ids, SHUFFLE_BUFFER_SIZE, BATCH_SIZE)
+train_ds = create_dataset(train_ids, SHUFFLE_BUFFER_SIZE, args.batch_size)
+val_ds = create_dataset(val_ids, SHUFFLE_BUFFER_SIZE, args.batch_size)
+test_ds = create_dataset(test_ids, SHUFFLE_BUFFER_SIZE, args.batch_size)
 
 # Example with one batch
 for inputs_batch, labels_batch in train_ds.take(1):
@@ -67,8 +72,9 @@ for inputs_batch, labels_batch in train_ds.take(1):
 #DEVICE = "/gpu:0"
 
 # divide config params by 2, to run model quickly
-config = BertConfig(vocab_size=len(VOCAB), num_hidden_layers=NUM_HIDDEN_LAYERS, num_attention_heads=NUM_ATTENTION_HEADS,
-                    hidden_size=HIDDEN_SIZE, intermediate_size=INTERMEDIATE_SIZE)
+config = BertConfig(vocab_size=len(VOCAB), num_hidden_layers=args.n_hidden_layers,
+                    num_attention_heads=args.n_attention_heads, hidden_size=args.hidden_size,
+                    intermediate_size=args.intermediate_size)
 model = TFBertForMaskedLM(config)
 
 configuration = model.config
