@@ -27,8 +27,9 @@ def create_dataset(ids, shuffle_buffer_size, batch_size):
     dataset = tf.data.Dataset.from_tensor_slices((masked_ids, attention_mask, type_ids, labels))
     dataset = dataset.map(map_example_to_dict)
 
-    # Shuffle, batch and prefetch
+    # Shuffle, batch, cache and prefetch
     dataset = dataset.shuffle(shuffle_buffer_size).batch(batch_size)
+    dataset = dataset.cache()
     dataset = dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
     return dataset
 
