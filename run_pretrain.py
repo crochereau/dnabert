@@ -74,7 +74,7 @@ logs = os.path.join(LOGS_DIR, datetime.now().strftime("%Y%m%d-%H%M%S"))
 
 
 # Import model
-DEVICE = "/gpu:0"
+DEVICE = "/gpu:1"
 
 config = BertConfig(
 	vocab_size=len(VOCAB),
