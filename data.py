@@ -180,9 +180,15 @@ def process_data_from_fasta(PATH_TO_FASTA, MAX_SEQ_LEN):
 
 
 def process_data_from_tar(PATH_TO_GENOMES, PATH_TO_TAR, MAX_SEQ_LEN):
-	# extract files from archive
+
+	# extract files from archive if they do not exist
 	pathlib.Path(PATH_TO_GENOMES).mkdir(parents=True, exist_ok=True)
-	extract_tar_file(PATH_TO_TAR, PATH_TO_GENOMES)
+
+	if len(os.listdir(PATH_TO_GENOMES))==0:
+		print('Extracting files from tar archive')
+		extract_tar_file(PATH_TO_TAR, PATH_TO_GENOMES)
+	else:
+		print('Files already extracted from tar archive')
 
 	# make sequence chunks fr mmultiple genomes
 	all_genomes_chunks, all_genomes_names = [], []
