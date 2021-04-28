@@ -4,14 +4,23 @@ import argparse
 data_parser = argparse.ArgumentParser()
 
 data_parser.add_argument(
-	"--exp_name",
-	type=str,
+	"--large_dataset",
+	type=bool,
+	default=False,
 	required=True,
 	help="Name of experiment."
 )
 
 
 train_parser = argparse.ArgumentParser()
+
+train_parser.add_argument(
+	"--large_dataset",
+	type=bool,
+	default=False,
+	required=True,
+	help="Name of experiment."
+)
 
 train_parser.add_argument(
 	"--exp_name",

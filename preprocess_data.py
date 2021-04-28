@@ -1,4 +1,5 @@
 from argparsers import data_parser
+import numpy as np
 
 from paths import *
 
@@ -34,3 +35,11 @@ ids_to_toks = map_ids_to_toks(VOCAB)
 print(toks_to_ids)
 all_ids = process_seq_chunks(all_chunks=all_chunks, toks_to_ids=toks_to_ids)
 print(all_ids.shape)
+
+# Save vectorized sequences to np.array
+if args.large_dataset == True:
+	path_to_ids = os.path.join(DATA_PATH, 'ids_large')
+else:
+	path_to_ids = os.path.join(DATA_PATH, 'ids_small')
+
+np.save(path_to_ids, all_ids)
