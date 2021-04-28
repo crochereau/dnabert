@@ -8,7 +8,7 @@ data_parser.add_argument(
 	type=str,
 	default='small',
 	required=True,
-	help="Name of experiment."
+	help="Which dataset to use. Can be 'small' or 'large'."
 )
 
 
@@ -19,7 +19,7 @@ train_parser.add_argument(
 	type=str,
 	default='small',
 	required=True,
-	help="Name of experiment."
+	help="Which dataset to use. Can be 'small' or 'large'."
 )
 
 train_parser.add_argument(
@@ -28,6 +28,11 @@ train_parser.add_argument(
 	required=True,
 	help="Name of experiment."
 )
+
+parser.add_argument(
+	"--gpu",
+	type=int,
+	help='GPU device to use')
 
 train_parser.add_argument(
 	"--batch_size",
