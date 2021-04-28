@@ -1,6 +1,8 @@
 from argparsers import data_parser
 import numpy as np
+import pathlib
 
+from data_utils import *
 from paths import *
 
 # vocabulary
@@ -12,12 +14,12 @@ MAX_SEQ_LEN = 510
 
 args = data_parser.parse_args()
 
-if args.large_dataset == True:
+if args.which_dataset == 'large':
 	# extract files from archive
 	pathlib.Path(PATH_TO_GENOMES).mkdir(parents=True, exist_ok=True)
 	# make genome chunks from multiple genomes
 	all_chunks = process_data_from_tar(PATH_TO_GENOMES, PATH_TO_TAR, MAX_SEQ_LEN)
-else:
+elif args.which_dataset == 'small':
 	# make genome chunks from single genome
 	all_chunks = process_data_from_fasta(PATH_TO_FASTA, MAX_SEQ_LEN)
 
@@ -37,9 +39,9 @@ all_ids = process_seq_chunks(all_chunks=all_chunks, toks_to_ids=toks_to_ids)
 print(all_ids.shape)
 
 # Save vectorized sequences to np.array
-if args.large_dataset == True:
+if args.which_dataset == 'large':
 	path_to_ids = os.path.join(DATA_PATH, 'ids_large')
-else:
+elif args.which_dataset == 'small':
 	path_to_ids = os.path.join(DATA_PATH, 'ids_small')
 
 np.save(path_to_ids, all_ids)

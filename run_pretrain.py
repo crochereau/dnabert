@@ -9,8 +9,6 @@ from data_utils import *
 from paths import *
 from metrics import *
 
-LARGE_DATASET = True
-
 # vocabulary
 DNA_TOKS = ['a','c','g','t']
 SPECIAL_TOKS = ['[cls]', '[mask]', '[sep]', '[pad]']

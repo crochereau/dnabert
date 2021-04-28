@@ -4,9 +4,9 @@ import argparse
 data_parser = argparse.ArgumentParser()
 
 data_parser.add_argument(
-	"--large_dataset",
-	type=bool,
-	default=False,
+	"--which_dataset",
+	type=str,
+	default='small',
 	required=True,
 	help="Name of experiment."
 )
@@ -15,9 +15,9 @@ data_parser.add_argument(
 train_parser = argparse.ArgumentParser()
 
 train_parser.add_argument(
-	"--large_dataset",
-	type=bool,
-	default=False,
+	"--which_dataset",
+	type=str,
+	default='small',
 	required=True,
 	help="Name of experiment."
 )
