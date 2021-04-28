@@ -28,6 +28,12 @@ logging.basicConfig(
 
 args = train_parser.parse_args()
 
+# Load vectorized sequences
+if args.which_dataset == 'large':
+	path_to_ids = os.path.join(DATA_PATH, 'ids_large.npy')
+elif args.which_dataset == 'small':
+	path_to_ids = os.path.join(DATA_PATH, 'ids_small.npy')
+all_ids = np.load(path_to_ids)
 
 # Create TF datasets (train-val-test split: 60-20-20)
 train_ids, test_ids = train_test_split(all_ids, test_size=0.2, random_state=1)
@@ -68,7 +74,7 @@ logs = os.path.join(LOGS_DIR, datetime.now().strftime("%Y%m%d-%H%M%S"))
 
 
 # Import model
-#DEVICE = "/gpu:0"
+DEVICE = "/gpu:0"
 
 config = BertConfig(
 	vocab_size=len(VOCAB),
