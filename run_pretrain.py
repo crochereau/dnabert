@@ -1,6 +1,9 @@
-from datetime import datetime
 import logging
+import numpy as np
+import os
+import tensorflow as tf
 
+from datetime import datetime
 from sklearn.model_selection import train_test_split
 from transformers import TFBertForMaskedLM, BertConfig
 
@@ -98,11 +101,15 @@ optimizer = tf.keras.optimizers.Adam(learning_rate=args.learning_rate)
 
 my_callbacks = [
 	tf.keras.callbacks.ModelCheckpoint(
-		filepath=checkpoint_path),
+		filepath=checkpoint_path,
+		save_weights_only=True,
+		monitor='val_accuracy',
+		save_best_only=True),
+
 	tf.keras.callbacks.TensorBoard(
 		log_dir=logs,
 		histogram_freq=1,
-		profile_batch='500,520'),
+		profile_batch='500,520')
 ]
 
 model.compile(

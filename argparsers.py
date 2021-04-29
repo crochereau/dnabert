@@ -29,7 +29,7 @@ train_parser.add_argument(
 	help="Name of experiment."
 )
 
-parser.add_argument(
+train_parser.add_argument(
 	"--gpu",
 	type=int,
 	help='GPU device to use')
@@ -54,13 +54,6 @@ train_parser.add_argument(
 	default=5e-5,
 	required=False,
 	help="Learning rate.")
-
-train_parser.add_argument(
-	"--output_dir",
-	type=str,
-	required=False,
-	help="The output directory where the model predictions and checkpoints will be written.",
-	)
 
 train_parser.add_argument(
 	"--n_hidden_layers",
